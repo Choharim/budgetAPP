@@ -9,7 +9,8 @@ header {
   text-align: center;
 }
 
-.warning {
+.warning,
+.warning2 {
   display: none;
   background-color: darksalmon;
   opacity: 0.7;
@@ -23,12 +24,12 @@ header {
   display: block;
 }
 
-header + div {
+.warning + div {
   display: flex;
 }
 
 @media screen and (max-width: 800px) {
-  header + div {
+  .warning + div {
     display: flex;
     flex-direction: column;
   }
@@ -74,12 +75,6 @@ header + div {
   display: flex;
 }
 
-@media screen and (max-width: 800px) {
-  .list-form {
-    padding: 30px 15px;
-  }
-}
-
 .list-budget {
   padding: 0 40px;
   display: flex;
@@ -103,6 +98,14 @@ header + div {
   padding-bottom: 20px;
 }
 
+.list-budgetAmount + span {
+  margin-bottom: 10px;
+}
+
+.list-text li {
+  padding: 10px 0;
+}
+
 .list-expense {
   padding: 0 40px;
   display: flex;
@@ -114,6 +117,16 @@ header + div {
   font-size: 45px;
   color: darkred;
   padding-bottom: 20px;
+}
+
+.list-expenseAmount + span {
+  margin-bottom: 10px;
+}
+
+.list-amount button {
+  position: relative;
+  right: -200px;
+  top: -25px;
 }
 
 .list-balance {
@@ -129,6 +142,7 @@ header + div {
 }
 
 .expense-form {
+  margin-top: 25px;
   width: 300px;
   border: 2px solid darkred;
   border-radius: 3px;
@@ -168,4 +182,8 @@ header + div {
 
 .expense-button:active {
   transform: scale(0.9);
+}
+
+img {
+  width: 20px;
 }
