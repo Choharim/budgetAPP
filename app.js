@@ -1,0 +1,10 @@
+const budgetInput = document.querySelector ("#buget-input"),
+budgetBtn = document.querySelector (".buget-button"),
+expenseInput = document.querySelector("#expense-input"),
+expenseAmountInput = document.querySelector("#expenseAmount-input"),
+expenseBtn = document.querySelector (".expense-button"),
+budgetAmount = document.querySelector(".list-budgetAmount"),
+expenseAmount = document.querySelector (".list-expenseAmount"),
+valanceAmount = document.querySelector(".list-balanceAmount"),
+expenseThing = document.querySelector(".list-text"),
+expenseValue = document.querySelector(".list-amount");
