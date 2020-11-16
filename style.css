@@ -1,0 +1,150 @@
+header {
+  padding: 20px 40px;
+  font-size: 40px;
+}
+
+header + div {
+  display: flex;
+}
+
+@media screen and (max-width: 800px) {
+  header + div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.budget-form {
+  width: 300px;
+  height: 115px;
+  border: 2px solid green;
+  border-radius: 3px;
+  padding: 10px;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#buget-input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 3px;
+  border: 1px solid gray;
+  border-radius: 3px;
+}
+
+.buget-button {
+  border: 2px solid green;
+  border-radius: 3px;
+  box-shadow: 0 0 5px 0 green;
+  padding: 3px;
+  background-color: transparent;
+  font-size: 12px;
+  color: green;
+  outline: none;
+}
+
+.buget-button:active {
+  transform: scale(0.9);
+}
+
+.list-form {
+  display: flex;
+}
+
+@media screen and (max-width: 800px) {
+  .list-form {
+    padding: 30px 15px;
+  }
+}
+
+.list-budget {
+  padding: 0 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-title {
+  font-size: 25px;
+}
+
+.list-title + i {
+  font-size: 50px;
+  color: darkslategrey;
+  padding: 20px 0;
+}
+
+.list-budgetAmount {
+  font-size: 45px;
+  color: green;
+  padding-bottom: 20px;
+}
+
+.list-expense {
+  padding: 0 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-expenseAmount {
+  font-size: 45px;
+  color: darkred;
+  padding-bottom: 20px;
+}
+
+.list-balance {
+  padding: 0 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-balanceAmount {
+  font-size: 45px;
+  color: green;
+}
+
+.expense-form {
+  width: 300px;
+  border: 2px solid darkred;
+  border-radius: 3px;
+  padding: 10px;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#expense-input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 3px;
+  border: 1px solid gray;
+  border-radius: 3px;
+}
+
+#expenseAmount-input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 3px;
+  border: 1px solid gray;
+  border-radius: 3px;
+}
+
+.expense-button {
+  border: 2px solid darkred;
+  border-radius: 3px;
+  box-shadow: 0 0 5px 0 darkred;
+  padding: 3px;
+  background-color: transparent;
+  font-size: 12px;
+  color: darkred;
+  outline: none;
+}
+
+.expense-button:active {
+  transform: scale(0.9);
+}
