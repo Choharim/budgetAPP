@@ -5,7 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>budget APP</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="reset.css" />
     <script defer src="app.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body></body>
+  <body>
+    <header>
+      <h1 class="app">BUDGET APP</h1>
+    </header>
+    <div>
+      <section class="budget-form">
+        <span class="budget-title"> Please Enter Your Budget. </span>
+        <input type="text" id="buget-input" />
+        <button class="buget-button">Calculate</button>
+      </section>
+      <section class="list-form">
+        <div class="list-budget">
+          <span class="list-title">BUDGET</span>
+          <i class="fas fa-money-bill-alt"></i>
+          <span class="list-budgetAmount">원</span>
+          <span>Expense Title</span>
+          <ul class="list-text"></ul>
+        </div>
+        <div class="list-expense">
+          <span class="list-title">EXPENSES</span>
+          <i class="far fa-credit-card"></i>
+          <span class="list-expenseAmount">원</span>
+          <span>Expense Value</span>
+          <ul class="list-amount"></ul>
+        </div>
+        <div class="list-balance">
+          <span class="list-title">BALANCE</span>
+          <i class="fas fa-won-sign"></i>
+          <span class="list-balanceAmount">원</span>
+        </div>
+      </section>
+    </div>
+    <section class="expense-form">
+      <span class="expense-title"> Please Enter Your Expense. </span>
+      <input type="text" id="expense-input" />
+      <span class="expense-title"> Please Enter Expense Amount. </span>
+      <input type="text" id="expenseAmount-input" />
+      <button class="expense-button">Add Expense</button>
+    </section>
+  </body>
 </html>
