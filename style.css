@@ -10,11 +10,13 @@ header {
 }
 
 .warning {
+  display: none;
   background-color: darksalmon;
   opacity: 0.7;
   border-radius: 3px;
   padding: 10px 16px;
   margin-left: 40px;
+  width: 300px;
 }
 
 .showing {
@@ -44,7 +46,7 @@ header + div {
   align-items: flex-start;
 }
 
-#buget-input {
+#budget-input {
   width: 100%;
   margin: 10px 0;
   padding: 3px;
@@ -52,7 +54,7 @@ header + div {
   border-radius: 3px;
 }
 
-.buget-button {
+.budget-button {
   border: 2px solid green;
   border-radius: 3px;
   box-shadow: 0 0 5px 0 green;
@@ -63,7 +65,7 @@ header + div {
   outline: none;
 }
 
-.buget-button:active {
+.budget-button:active {
   transform: scale(0.9);
 }
 
