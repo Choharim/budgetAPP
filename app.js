@@ -10,6 +10,18 @@ expenseThing = document.querySelector(".list-text"),
 expenseValue = document.querySelector(".list-amount"),
 warning = document.querySelector (".warning");
 
+function showExpense(userExpenseAmount) {
+  expenseAmount.innerText = `-${userExpenseAmount}원`;
+}
+
+function submitExpense(){
+  const userExpense = expenseInput.value;
+  const userExpenseAmount = expenseAmountInput.value;
+
+  if(userExpense !== "" && userExpenseAmount !== "" ){
+    showExpense(userExpenseAmount);
+  }
+}
 
 function showBudget(userBudget) {
   budgetAmount.innerText = `${userBudget}원`;
@@ -22,8 +34,7 @@ function digit_check(evt){
   }
 }
 
-function submitBudget (event){
-  event.preventDefault();
+function submitBudget (){
   const userBudget = budgetInput.value;
   showBudget(userBudget);
 
@@ -37,5 +48,6 @@ function submitBudget (event){
 
 function init(){
   budgetBtn.addEventListener("click",submitBudget);
+  expenseBtn.addEventListener("click",submitExpense);
 }
 init();

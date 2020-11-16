@@ -54,7 +54,12 @@
       <span class="expense-title"> Please Enter Your Expense. </span>
       <input type="text" id="expense-input" />
       <span class="expense-title"> Please Enter Expense Amount. </span>
-      <input type="text" id="expenseAmount-input" />
+      <input
+        type="number"
+        style="ime-mode: disabled"
+        onkeypress="return digit_check(event)"
+        id="expenseAmount-input"
+      />
       <button class="expense-button">Add Expense</button>
     </section>
   </body>
