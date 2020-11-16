@@ -59,6 +59,8 @@ function submitExpense(){
     totalExpense = totalExpense + userExpenseAmount;
     showExpense(totalExpense);
     showList(userExpense,userExpenseAmount);
+    let budget = submitBudget();
+    showBalance(budget,totalExpense);
     warning2.classList.remove ("showing");
   }
   else{
@@ -67,7 +69,6 @@ function submitExpense(){
   
   expenseInput.value = "";
   expenseAmountInput.value = "";
-  return totalExpense;
 }
 
 function showBudget(userBudget) {
@@ -82,24 +83,24 @@ function digit_check(evt){
 }
 
 function submitBudget (){
-  let userBudget = budgetInput.value;
-  showBudget(userBudget);
 
+  let userBudget = budgetInput.value;
+  
   if(userBudget === ""){
     warning.classList.add ("showing");
   }
   else{
+    userBudget *= 1;
+    showBudget(userBudget);
     warning.classList.remove ("showing");
+    return userBudget;
   }
   budgetInput.value = "";
-  return userBudget;
 }
 
-function showBalance(){
-  let budget = submitBudget ();
-  let expense = submitExpense ();
-  valanceAmount.innerText = budget - expense;
-
+function showBalance(budget,totalExpense){
+  let balance = budget - totalExpense;
+  valanceAmount.innerText = `${balance}원`;
 }
 
 
