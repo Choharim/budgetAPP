@@ -11,11 +11,12 @@ expenseValue = document.querySelector(".list-amount"),
 warning = document.querySelector (".warning"),
 warning2 = document.querySelector (".warning2");
 
+const EXPENSE_LS= "expenseList";
 let totalExpense = 0;
 let expenseStorage = [];
 
 function saveList() {
-  localStorage.setItem("expenseList",JSON.stringify(expenseStorage));
+  localStorage.setItem(EXPENSE_LS,JSON.stringify(expenseStorage));
 }
 
 function showList(userExpense,userExpenseAmount) {
@@ -44,6 +45,8 @@ function showList(userExpense,userExpenseAmount) {
   li_thing.innerText = userExpense;
   li_value.innerText = userExpenseAmount;
   saveList();
+
+
 }
 
 function showExpense(totalExpense) {
@@ -55,13 +58,13 @@ function submitExpense(){
   let userExpenseAmount = expenseAmountInput.value;
 
   if(userExpense !== "" && userExpenseAmount !== "" ){
+    warning2.classList.remove ("showing");
     userExpenseAmount *= 1;
     totalExpense = totalExpense + userExpenseAmount;
     showExpense(totalExpense);
     showList(userExpense,userExpenseAmount);
     let budget = submitBudget();
     showBalance(budget,totalExpense);
-    warning2.classList.remove ("showing");
   }
   else{
     warning2.classList.add ("showing");
@@ -83,18 +86,17 @@ function digit_check(evt){
 }
 
 function submitBudget (){
-
   let userBudget = budgetInput.value;
   
-  if(userBudget === ""){
-    warning.classList.add ("showing");
-  }
-  else{
+  if(userBudget !== ""){
+    warning.classList.remove ("showing");
     userBudget *= 1;
     showBudget(userBudget);
-    warning.classList.remove ("showing");
     return userBudget;
+  }else{
+    warning.classList.add ("showing");
   }
+
   budgetInput.value = "";
 }
 
@@ -107,5 +109,20 @@ function showBalance(budget,totalExpense){
 function init(){
   budgetBtn.addEventListener("click",submitBudget);
   expenseBtn.addEventListener("click",submitExpense);
+  const loaded_LS = localStorage.getItem(EXPENSE_LS);
+  if( loaded_LS !== null){
+    const parsed_LS = JSON.parse(loaded_LS);
+    let total = 0;
+    parsed_LS.forEach( function (exp){ 
+      showList(exp.list,exp.cost);
+      total += exp.cost ;
+    });
+    showExpense(total);
+    /*parsed_LS.reduce(function (result,exp){
+      showExpense(result + exp.cost);
+    },0);*/
+  }
+
+  
 }
 init();
