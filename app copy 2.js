@@ -13,33 +13,35 @@ warning2 = document.querySelector (".warning2");
 
 const EXPENSE_LS= "expenseList";
 const BUDGET_LS = "budget";
-let totalExpense = 0;
 let expenseStorage = [];
 let budgetStorage = [];
 
 function del(event){
   const targetBtn = event.target;
   const className = targetBtn.parentNode.className;
+  const elements = document.getElementsByClassName(className);
 
-  function removeElementsByClass(className){
-    let elements = document.getElementsByClassName(className);
     while(elements.length > 0){
         elements[0].parentNode.removeChild(elements[0]);
     }
-  }
-  removeElementsByClass(className);
-
-  const newArray = expenseStorage.filter(function(element){
+ 
+  const updateArray = expenseStorage.filter(function(element){
     return element.class != className;
   });
-  expenseStorage = newArray;
+  expenseStorage = updateArray;
   saveList();
+  showExpense();
+}
 
-  expenseStorage.forEach(function(exp){
-    let sum = 0;
-    sum += exp.cost;
-    expenseAmount.innerText = `-${sum}원`;
-  });
+function showExpense () {
+  const string_expenseST = localStorage.getItem(EXPENSE_LS);
+  const parsed_expenseST = JSON.parse(string_expenseST);
+
+  let totalExpense = parsed_expenseST.reduce(function (result,exp){
+    return result + exp.cost;
+  },0);
+  expenseAmount.innerText = `-${totalExpense}원`;
+  showBalance(totalExpense);
 }
 
 function saveList() {
@@ -57,7 +59,6 @@ function showList(userExpense,userExpenseAmount) {
   expenseValue.appendChild(delBtn);
   expenseValue.appendChild(modiBtn);
 
-  delBtn.addEventListener("click",del);
   delBtn.innerHTML = "<img src=\"trashbin.png\">";
   modiBtn.innerHTML = "<img src=\"modify.png\">";
 
@@ -65,37 +66,28 @@ function showList(userExpense,userExpenseAmount) {
   li_value.classList.add(expenseStorage.length + 1);
   delBtn.classList.add(expenseStorage.length + 1);
   modiBtn.classList.add(expenseStorage.length + 1);
-  
 
-  const obj = {
+  li_thing.innerText = userExpense;
+  li_value.innerText = `-${userExpenseAmount}원`;
+
+  const expenseObj = {
     list: userExpense,
     cost: userExpenseAmount,
     class: expenseStorage.length + 1
   };
-  expenseStorage.push(obj);
-  li_thing.innerText = userExpense;
-  li_value.innerText = userExpenseAmount;
+  expenseStorage.push(expenseObj);
   saveList();
-
-
-}
-
-function showExpense(totalExpense) {
-  expenseAmount.innerText = `-${totalExpense}원`;
+  showExpense();
+  delBtn.addEventListener("click",del);
 }
 
 function submitExpense(){
-  let userExpense = expenseInput.value;
-  let userExpenseAmount = expenseAmountInput.value;
+  const userExpense = expenseInput.value;
+  const userExpenseAmount = expenseAmountInput.value;
 
   if(userExpense !== "" && userExpenseAmount !== "" ){
     warning2.classList.remove ("showing");
-    userExpenseAmount *= 1;
-    totalExpense = totalExpense + userExpenseAmount;
-    showExpense(totalExpense);
     showList(userExpense,userExpenseAmount);
-    let budget = submitBudget();
-    showBalance(budget,totalExpense);
   }
   else{
     warning2.classList.add ("showing");
@@ -105,10 +97,6 @@ function submitExpense(){
   expenseAmountInput.value = "";
 }
 
-function showBudget(userBudget) {
-  budgetAmount.innerText = `${userBudget}원`;
-}
-
 function digit_check(evt){
   var code = evt.which?evt.which:event.keyCode;
   if(code < 48 || code > 57){
@@ -116,63 +104,50 @@ function digit_check(evt){
   }
 }
 
+function showBudget() {
+  const string_budgetST = localStorage.getItem(BUDGET_LS);
+  const parsed_budgetST = JSON.parse(string_budgetST);
+
+  budgetAmount.innerText = `${parsed_budgetST[0].budget}원`;
+}
+
 function savebudget() {
   localStorage.setItem(BUDGET_LS,JSON.stringify(budgetStorage));
 }
 
 function submitBudget (){
-  let userBudget = budgetInput.value;
+  const userBudget = budgetInput.value;
   
   if(userBudget !== ""){
     warning.classList.remove ("showing");
-    userBudget *= 1;
     const budgetObj = {
       budget : userBudget
     };
     budgetStorage.push(budgetObj);
     savebudget();
-    showBudget(userBudget);
-    budgetInput.value = "";
-    return userBudget;
+    showBudget();
   }else{
     warning.classList.add ("showing");
   }
-  
+
+  budgetInput.value = "";
 }
 
-function showBalance(budget,totalExpense){
-  let balance = budget - totalExpense;
+function showBalance(totalExpense){
+  const str_budget = localStorage.getItem(BUDGET_LS);
+  const pars_budget = JSON.parse(str_budget);
+
+  const balance = pars_budget[0].budget - totalExpense;
   valanceAmount.innerText = `${balance}원`;
 }
-
 
 function init(){
   budgetBtn.addEventListener("click",submitBudget);
   expenseBtn.addEventListener("click",submitExpense);
-  const loaded_LS = localStorage.getItem(EXPENSE_LS);
-  if( loaded_LS !== null){
-    const parsed_LS = JSON.parse(loaded_LS);
-  
-     parsed_LS.reduce(function (result,exp){
-      let total = result + exp.cost
-      return total;
-    },0);
-    showExpense(total);
-    
-    
-    if(localStorage.getItem(BUDGET_LS) !== null){
-     const parsed_budget = JSON.parse(localStorage.getItem(BUDGET_LS));
-     parsed_budget.forEach(function(bg){
-      showBudget(bg.budget);
-     });
-     let budget = parsed_budget.forEach(function(bg){
-      return bg.budget*1;
-     });
-     showBalance(budget,total);
-    }
-    
-   
-  }
-  
+
+  if( localStorage.getItem(EXPENSE_LS) !== null || localStorage.getItem(BUDGET_LS) !== null){
+    showBudget();
+    showExpense();
+  } 
 }
 init();
