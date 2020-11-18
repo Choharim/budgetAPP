@@ -21,9 +21,15 @@ function modi(event){
   const modiClassName = targetModi.parentNode.className;
   const ele = document.getElementsByClassName(modiClassName);
 
-    while(ele.length > 0){
-        ele[0].parentNode.removeChild(ele[0]);
-    }
+  while(ele.length > 0){
+    ele[0].parentNode.removeChild(ele[0]);
+ }
+
+  const select = expenseStorage.filter(function(element){
+    return element.class == modiClassName;
+  });
+  expenseInput.value = select[0].list;
+  expenseAmountInput.value = select[0].cost;
 
   const update = expenseStorage.filter(function(element){
     return element.class != modiClassName;
