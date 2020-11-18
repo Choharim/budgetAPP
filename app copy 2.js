@@ -38,6 +38,7 @@ function showExpense () {
   const parsed_expenseST = JSON.parse(string_expenseST);
 
   let totalExpense = parsed_expenseST.reduce(function (result,exp){
+    exp.cost *= 1;
     return result + exp.cost;
   },0);
   expenseAmount.innerText = `-${totalExpense}원`;
@@ -136,8 +137,10 @@ function submitBudget (){
 function showBalance(totalExpense){
   const str_budget = localStorage.getItem(BUDGET_LS);
   const pars_budget = JSON.parse(str_budget);
+  let budget = pars_budget[0].budget;
+  budget *= 1;
+  const balance = budget - totalExpense;
 
-  const balance = pars_budget[0].budget - totalExpense;
   valanceAmount.innerText = `${balance}원`;
 }
 
