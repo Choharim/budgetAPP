@@ -16,6 +16,22 @@ const BUDGET_LS = "budget";
 let expenseStorage = [];
 let budgetStorage = [];
 
+function modi(event){
+  const targetModi = event.target;
+  const modiClassName = targetModi.parentNode.className;
+  const ele = document.getElementsByClassName(modiClassName);
+
+    while(ele.length > 0){
+        ele[0].parentNode.removeChild(ele[0]);
+    }
+
+  const update = expenseStorage.filter(function(element){
+    return element.class != modiClassName;
+  });
+  expenseStorage = update;
+  saveList();
+}
+
 function del(event){
   const targetBtn = event.target;
   const className = targetBtn.parentNode.className;
@@ -30,7 +46,6 @@ function del(event){
   });
   expenseStorage = updateArray;
   saveList();
-  showExpense();
 }
 
 function showExpense () {
@@ -42,7 +57,6 @@ function showExpense () {
     return result + exp.cost;
   },0);
   expenseAmount.innerText = `-${totalExpense}원`;
-  showBalance(totalExpense);
 }
 
 function saveList() {
@@ -77,9 +91,14 @@ function showList(userExpense,userExpenseAmount) {
     class: expenseStorage.length + 1
   };
   expenseStorage.push(expenseObj);
+  delBtn.addEventListener("click",del);
+  modiBtn.addEventListener("click",modi);
+  delBtn.addEventListener("click",showBalance);
+  modiBtn.addEventListener("click",showBalance);
+  delBtn.addEventListener("click",showExpense);
+  modiBtn.addEventListener("click",showExpense);
   saveList();
   showExpense();
-  delBtn.addEventListener("click",del);
 }
 
 function submitExpense(){
@@ -134,12 +153,21 @@ function submitBudget (){
   budgetInput.value = "";
 }
 
-function showBalance(totalExpense){
+function showBalance(){
   const str_budget = localStorage.getItem(BUDGET_LS);
   const pars_budget = JSON.parse(str_budget);
   let budget = pars_budget[0].budget;
   budget *= 1;
-  const balance = budget - totalExpense;
+
+  const str_expense = localStorage.getItem(EXPENSE_LS);
+  const pars_expense = JSON.parse(str_expense);
+  let expense = pars_expense.reduce(function (result,exp){
+    exp.cost *= 1;
+    return result + exp.cost;
+  },0);
+  expense *= 1;
+
+  const balance = budget - expense;
 
   valanceAmount.innerText = `${balance}원`;
 }
@@ -147,10 +175,20 @@ function showBalance(totalExpense){
 function init(){
   budgetBtn.addEventListener("click",submitBudget);
   expenseBtn.addEventListener("click",submitExpense);
+  
+  budgetBtn.addEventListener("click",showBalance);
+  expenseBtn.addEventListener("click",showBalance);
+
 
   if( localStorage.getItem(EXPENSE_LS) !== null || localStorage.getItem(BUDGET_LS) !== null){
     showBudget();
-    showExpense();
+    const strLoadedBudget = localStorage.getItem(EXPENSE_LS);
+    const parsLoadedBudget = JSON.parse(strLoadedBudget);
+
+    parsLoadedBudget.forEach(function(exp){
+      showList(exp.list,exp.cost);
+    });
+    showBalance();
   } 
 }
 init();
