@@ -142,6 +142,7 @@ function savebudget() {
 }
 
 function submitBudget (){
+
   const userBudget = budgetInput.value;
   
   if(userBudget !== ""){
@@ -157,6 +158,13 @@ function submitBudget (){
   }
 
   budgetInput.value = "";
+}
+
+function resetBudgetSt(){
+  
+    const originBudget= localStorage.getItem(BUDGET_LS);
+    const resetBudget = JSON.parse(originBudget);
+    resetBudget.splice(0,);
 }
 
 function showBalance(){
@@ -185,6 +193,7 @@ function init(){
   budgetBtn.addEventListener("click",showBalance);
   expenseBtn.addEventListener("click",showBalance);
 
+  budgetBtn.addEventListener("click",resetBudgetSt);
 
   if( localStorage.getItem(EXPENSE_LS) !== null || localStorage.getItem(BUDGET_LS) !== null){
     showBudget();
