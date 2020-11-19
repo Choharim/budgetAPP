@@ -52,6 +52,9 @@ function del(event){
   const updateArray = expenseStorage.filter(function(element){
     return element.class != className;
   });
+  /* updateArray.forEach(function(element){
+    element.class = updateArray.length + 1;
+  })*/
   expenseStorage = updateArray
   saveList();
   showExpense ();
@@ -59,6 +62,36 @@ function del(event){
   if(localStorage.getItem(BUDGET_LS) !==null ){
     showBalance();
   }
+}
+
+function paintList(){
+  const li_thing = document.createElement ("li");
+  const li_value = document.createElement ("li");
+  const delBtn= document.createElement ("button");
+  const modiBtn = document.createElement ("button");
+
+  expenseThing.appendChild(li_thing);
+  expenseValue.appendChild(li_value);
+  expenseValue.appendChild(delBtn);
+  expenseValue.appendChild(modiBtn);
+
+  delBtn.innerHTML = "<img src=\"trashbin.png\">";
+  modiBtn.innerHTML = "<img src=\"modify.png\">";
+
+  const strExpense = localStorage.getItem(EXPENSE_LS);
+  const parsExpense = JSON.parse(strExpense);
+
+  li_thing.classList.add(parsExpense.length);
+  li_value.classList.add(parsExpense.length);
+  delBtn.classList.add(parsExpense.length);
+  modiBtn.classList.add(parsExpense.length);
+
+  const index = parsExpense.length-1;
+  li_thing.innerText = parsExpense[index].list;
+  li_value.innerText = `-${parsExpense[index].cost}원`;
+  
+  delBtn.addEventListener("click",del);
+  modiBtn.addEventListener("click",modi);
 }
 
 function showExpense () {
@@ -78,27 +111,6 @@ function saveList() {
 }
 
 function showList(userExpense,userExpenseAmount) {
-  const li_thing = document.createElement ("li");
-  const li_value = document.createElement ("li");
-  const delBtn= document.createElement ("button");
-  const modiBtn = document.createElement ("button");
-
-  expenseThing.appendChild(li_thing);
-  expenseValue.appendChild(li_value);
-  expenseValue.appendChild(delBtn);
-  expenseValue.appendChild(modiBtn);
-
-  delBtn.innerHTML = "<img src=\"trashbin.png\">";
-  modiBtn.innerHTML = "<img src=\"modify.png\">";
-
-  li_thing.classList.add(expenseStorage.length + 1);
-  li_value.classList.add(expenseStorage.length + 1);
-  delBtn.classList.add(expenseStorage.length + 1);
-  modiBtn.classList.add(expenseStorage.length + 1);
-
-  li_thing.innerText = userExpense;
-  li_value.innerText = `-${userExpenseAmount}원`;
-
   const expenseObj = {
     list: userExpense,
     cost: userExpenseAmount,
@@ -107,8 +119,7 @@ function showList(userExpense,userExpenseAmount) {
   expenseStorage.push(expenseObj);
   saveList();
   showExpense();
-  delBtn.addEventListener("click",del);
-  modiBtn.addEventListener("click",modi);
+  paintList();
 
   if(localStorage.getItem(BUDGET_LS) !==null ){
     showBalance();
@@ -184,20 +195,11 @@ function showBalance(){
   valanceAmount.innerText = `${balance}원`;
 }
 
-function refreshShowList () {
-  const strLoadedExpense = localStorage.getItem(EXPENSE_LS);
-  const parsLoadedExpense = JSON.parse(strLoadedExpense);
-
-  parsLoadedExpense.forEach(function(exp){
-    showList(exp.list,exp.cost);
-  });
-}
-
 function init(){
   budgetBtn.addEventListener("click",submitBudget);
   expenseBtn.addEventListener("click",submitExpense);
   if( localStorage.getItem(EXPENSE_LS) !== null ){
-    refreshShowList();
+    paintList();
   } 
   if( localStorage.getItem(BUDGET_LS) !== null){
     showBudget();
