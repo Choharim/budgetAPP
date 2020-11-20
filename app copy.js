@@ -15,10 +15,22 @@ const EXPENSE_LS= "expenseList";
 const BUDGET_LS = "budget";
 let expenseStorage = [];
 
+function removeAllList(){
+  const str_Expense = localStorage.getItem(EXPENSE_LS);
+  const pars_Expense = JSON.parse(str_Expense);
+  const leng = pars_Expense.length +1;
+
+  for(i=1; i <= leng; i++){
+    const a = document.getElementsByClassName(i);
+    while(a.length > 0){
+      a[0].parentNode.removeChild(a[0]);
+    }
+  }
+}
 
 function modi(event){
   const targetModi = event.target;
-  const modiClassName = targetModi.parentNode.className;
+  const modiClassName = targetModi.parentNode.className; //img가 button안에 있으니까
   const ele = document.getElementsByClassName(modiClassName);
 
   while(ele.length > 0){
@@ -32,7 +44,7 @@ function modi(event){
 }); 
   expenseStorage = update;
   saveList();
-
+  removeAllList();
   const select = cloneArray.find(function(element){
     return element.class == modiClassName;
   });
@@ -42,7 +54,7 @@ function modi(event){
 
 function del(event){
   const targetBtn = event.target;
-  const className = targetBtn.parentNode.className;
+  const className = targetBtn.parentNode.className; //img가 button안에 있으니까
   const elements = document.getElementsByClassName(className);
 
     while(elements.length > 0){
@@ -55,25 +67,9 @@ function del(event){
   expenseStorage = updateArray
   saveList();
   showExpense ();
-  /*보이는 li와 del,modi 버튼 모두 삭제한 후 refreshShowListFn실행하면 될거같은데? 
-  남아있는 li와 del,modi 버튼의 class이름 범위는 1~EXPLocalstorage배열길이+1(1개삭제했으니)까지 잡아서 이 값을 갖는 class를 갖는
-  li와 del,modi 버튼 tag 모두삭제하면 되지 않을까... 
 
-  const str = localStorage.getItem(EXPENSE_LS);
-  const pars = JSON.pars(str);
-  const length = pars.length + 1;
-  for(i=1; i <=length; i++){
-  const i = document.getElementByClassName(i);
-  while(i.length > 0){
-    i[0].parentNode.removeChild(i[0]);
-  }
-  }
-
-  refreshShowListFn();
-  */
-
-  /*LOCALST에 ex먼저 저장 후 마지막 element의 list와 cost,class가져와서 보여주고 class지정하고.
-  del,modi 할때는 localst ex배열을 forEach해서 class를 1~배열길이만큼 범위로 다시지정해서 set시킴*/ 
+  removeAllList();
+  refreshShowList();
   if(localStorage.getItem(BUDGET_LS) !==null ){
     showBalance();
   }
@@ -96,22 +92,26 @@ function saveList() {
 }
 
 function showList(userExpense,userExpenseAmount) {
-  const li = document.createElement ("li");
-  const span = document.createElement ("span");
+  const li_thing = document.createElement ("li");
+  const li_value = document.createElement ("li");
   const delBtn= document.createElement ("button");
   const modiBtn = document.createElement ("button");
 
-  expenseThing.appendChild(li);
-  li.appendChild(span);
-  li.appendChild(delBtn);
-  li.appendChild(modiBtn);
+  expenseThing.appendChild(li_thing);
+  expenseValue.appendChild(li_value);
+  expenseValue.appendChild(delBtn);
+  expenseValue.appendChild(modiBtn);
 
   delBtn.innerHTML = "<img src=\"trashbin.png\">";
   modiBtn.innerHTML = "<img src=\"modify.png\">";
 
-  li.classList.add(expenseStorage.length + 1);
+  li_thing.classList.add(expenseStorage.length + 1);
+  li_value.classList.add(expenseStorage.length + 1);
+  delBtn.classList.add(expenseStorage.length + 1);
+  modiBtn.classList.add(expenseStorage.length + 1);
 
-  span.innerText = `${userExpense}        -${userExpenseAmount}원`;
+  li_thing.innerText = userExpense;
+  li_value.innerText = `-${userExpenseAmount}원`;
 
   const expenseObj = {
     list: userExpense,
@@ -153,10 +153,10 @@ function digit_check(evt){
 }
 
 function showBudget() {
-  const string_budgetST = localStorage.getItem(BUDGET_LS);
-  console.log(string_budgetST);
-  budgetAmount.innerText = `${string_budgetST}원`;
-  return string_budgetST;
+  const budgetST = localStorage.getItem(BUDGET_LS);
+
+  budgetAmount.innerText = `${budgetST}원`;
+  return budgetST;
 }
 
 function savebudget(budget) {
@@ -165,19 +165,20 @@ function savebudget(budget) {
 
 function submitBudget (){
   const userBudget = budgetInput.value;
-
+  
   if(userBudget !== ""){
-  warning.classList.remove ("showing"); 
+    warning.classList.remove ("showing");
+   
+    savebudget(userBudget);
+    showBudget();
 
-  savebudget(userBudget);
-  showBudget();
-   if(localStorage.getItem(EXPENSE_LS) !==null ){
-    showBalance();
-   }
-  }
-  else{
+    if(localStorage.getItem(EXPENSE_LS) !==null ){
+      showBalance();
+    }
+  }else{
     warning.classList.add ("showing");
   }
+
   budgetInput.value = "";
 }
 
@@ -212,3 +213,4 @@ function init(){
   } 
 }
 init();
+//del이나 modi 버튼 눌러서 삭제하거나 수정할 때 class다시 순차적으로 바뀌는거 안되어있음
