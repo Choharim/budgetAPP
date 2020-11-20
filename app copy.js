@@ -26,6 +26,7 @@ function removeAllList(){
       a[0].parentNode.removeChild(a[0]);
     }
   }
+  expenseStorage = [];
 }
 
 function modi(event){
@@ -69,7 +70,7 @@ function del(event){
   showExpense ();
 
   removeAllList();
-  refreshShowList();
+  refreshShowList ();
   if(localStorage.getItem(BUDGET_LS) !==null ){
     showBalance();
   }
