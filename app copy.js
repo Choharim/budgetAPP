@@ -46,6 +46,7 @@ function modi(event){
   expenseStorage = update;
   saveList();
   removeAllList();
+  refreshShowList ();
   const select = cloneArray.find(function(element){
     return element.class == modiClassName;
   });
